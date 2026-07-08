@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { TbListDetails } from "react-icons/tb";
-import { TbShoppingBagCheck } from "react-icons/tb";
+import { GiShoppingCart } from "react-icons/gi";
 
 import { shortenText } from "../helpers/helper";
 
@@ -19,7 +19,7 @@ function Card({ data }) {
         </Link>
         <div>
           <button>
-            <TbShoppingBagCheck />
+            <GiShoppingCart />
           </button>
         </div>
       </div>
