@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { ImSearch } from "react-icons/im";
 import { FaListUl } from "react-icons/fa";
+import { useSearchParams } from "react-router";
 
 import { useProducts } from "../context/ProductsContext";
-import { filterProducts, searchProducts } from "../helpers/helper";
+import {
+  createQueryObject,
+  filterProducts,
+  searchProducts,
+} from "../helpers/helper";
 
 import Card from "../components/Card";
 import Loader from "../components/Loader";
@@ -17,11 +22,14 @@ function ProductsPage() {
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState({});
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
     setDisplayed(products);
   }, [products]);
 
   useEffect(() => {
+    setSearchParams(query);
     let finalProducts = searchProducts(products, query.search);
     finalProducts = filterProducts(finalProducts, query.category);
 
@@ -29,7 +37,7 @@ function ProductsPage() {
   }, [query]);
 
   const serachHandler = () => {
-    setQuery((query) => ({ ...query, search }));
+    setQuery((query) => createQueryObject(query, { search }));
   };
 
   const categoryHandler = (event) => {
@@ -38,7 +46,7 @@ function ProductsPage() {
 
     if (tagName !== "LI") return;
 
-    setQuery((query) => ({ ...query, category }));
+    setQuery((query) => createQueryObject(query, { category }));
   };
 
   return (
