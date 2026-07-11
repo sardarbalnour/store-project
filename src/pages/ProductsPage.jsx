@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImSearch } from "react-icons/im";
 import { FaListUl } from "react-icons/fa";
 
@@ -12,7 +12,12 @@ import styles from "./ProductsPage.module.css";
 function ProductsPage() {
   const products = useProducts();
 
+  const [displayed, setDisplayed] = useState([]);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    setDisplayed(products);
+  }, [products]);
 
   const serachHandler = () => {
     console.log(search);
@@ -21,7 +26,7 @@ function ProductsPage() {
   const categoryHandler = (event) => {
     const { tagName } = event.target;
     const category = event.target.innerText.toLowerCase();
-    console.log(category)
+    console.log(category);
 
     if (tagName !== "LI") return;
   };
@@ -41,8 +46,8 @@ function ProductsPage() {
       </div>
       <div className={styles.container}>
         <div className={styles.products}>
-          {!products.length && <Loader />}
-          {products.map((product) => (
+          {!displayed.length && <Loader />}
+          {displayed.map((product) => (
             <Card key={product.id} data={product} />
           ))}
         </div>
