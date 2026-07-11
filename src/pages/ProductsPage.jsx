@@ -3,6 +3,7 @@ import { ImSearch } from "react-icons/im";
 import { FaListUl } from "react-icons/fa";
 
 import { useProducts } from "../context/ProductsContext";
+import { filterProducts, searchProducts } from "../helpers/helper";
 
 import Card from "../components/Card";
 import Loader from "../components/Loader";
@@ -21,7 +22,10 @@ function ProductsPage() {
   }, [products]);
 
   useEffect(() => {
-    console.log(query);
+    let finalProducts = searchProducts(products, query.search);
+    finalProducts = filterProducts(finalProducts, query.category);
+
+    setDisplayed(finalProducts);
   }, [query]);
 
   const serachHandler = () => {
