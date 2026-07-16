@@ -1,8 +1,43 @@
+import { Link, useParams } from "react-router";
+import { SiOpenproject } from "react-icons/si";
+import { IoMdPricetag } from "react-icons/io";
+
+import { useProductDetails } from "../context/ProductsContext";
+
+import Loader from "../components/Loader";
+import { FaArrowLeft } from "react-icons/fa";
+
+import styles from "./DetailsPage.module.css";
 
 function DetailsPage() {
+  const { id } = useParams();
+
+  const productDetails = useProductDetails(+id);
+
+  if (!productDetails) return <Loader />;
   return (
-    <div>DetailsPage</div>
-  )
+    <div className={styles.container}>
+      <img src={productDetails.image} alt={productDetails.title} />
+      <div className={styles.information}>
+        <h3>{productDetails.title}</h3>
+        <p className={styles.description}>{productDetails.description}</p>
+        <p className={styles.category}>
+          <SiOpenproject color="#fd5e42"/>
+          {productDetails.category}
+        </p>
+        <div>
+          <span className={styles.price}>
+            <IoMdPricetag color="#fd5e42"/>
+            {productDetails.price} $
+          </span>
+          <Link to="/products">
+            <FaArrowLeft />
+            <span>Back to shop</span>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default DetailsPage
+export default DetailsPage;
